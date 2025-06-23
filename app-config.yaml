@@ -1,6 +1,6 @@
 app:
   title: Scaffolded Backstage App
-  baseUrl: http://44.212.58.202:3000
+  baseUrl: http://3.91.203.26:3000
   listen:
     host: 0.0.0.0
 
@@ -8,13 +8,14 @@ organization:
   name: My Company
 
 backend:
-  baseUrl: http://44.212.58.202:7007
+  baseUrl: http://3.91.203.26:7007
   listen:
     port: 7007
+    host: 0.0.0.0
   csp:
     connect-src: ["'self'", 'http:', 'https:']
   cors:
-    origin: http://44.212.58.202:3000
+    origin: http://3.91.203.26:3000
     methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
     credentials: true
   database:
@@ -25,15 +26,8 @@ integrations:
   github:
     - host: github.com
       token: ${GITHUB_TOKEN}
-    # - host: ghe.example.net
-    #   apiBaseUrl: https://ghe.example.net/api/v3
-    #   token: ${GHE_TOKEN}
 
-proxy:
-  # endpoints:
-  #   '/test':
-  #     target: 'https://example.com'
-  #     changeOrigin: true
+proxy: {}
 
 techdocs:
   builder: 'local'
@@ -45,39 +39,29 @@ techdocs:
 auth:
   environment: development
   providers:
-    guest: {}
     github:
       development:
         clientId: ${AUTH_GITHUB_CLIENT_ID}
         clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
-        signin:
+        signIn:
           resolvers:
             - resolver: usernameMatchingUserEntityName
+    # guest: {}
 
-scaffolder:
-  # see https://backstage.io/docs/features/software-templates/configuration for software template options
+scaffolder: {}
 
 catalog:
-  import:
-    entityFilename: catalog-info.yaml
-    pullRequestBranchName: backstage-integration
   rules:
-    - allow: [Group, User, Template, Component, System, API, Resource, Location]
+    - allow: [User, Component, System, API, Resource, Location]
   locations:
-    # Local example organizational data
     - type: file
-      target: /app/rsk-idp01/catalog/entities/users.yaml
-    # - type: url
-    #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all.yaml
-    # - type: url
-    #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme-corp.yaml
-    #   rules:
-    #     - allow: [User, Group]
+      target: /app/rsk-backstage/catalog/entities/users.yaml   # ✅ Ensure this path is relative to the backend working directory
+
   useUrlReadersSearch: true
 
 kubernetes:
-  # see https://backstage.io/docs/features/kubernetes/configuration for kubernetes configuration options
 
 permission:
   enabled: true
+
 
